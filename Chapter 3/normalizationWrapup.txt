@@ -1,0 +1,66 @@
+
+ -- Wrapup on normalization and join operations
+
+  # How the recClub tables stand up to normalization criteria
+
+    customers(cust_id, name)                                ## BCNF
+
+      Keys: cust_id is the designated key: 'primary key' in SQL
+      FDs: cust_id----->name
+
+    activities(act_id, name, cost)                          ## BCNF
+
+      Keys: act_id is the designated key
+      FDs:  act_id----->(name, cost)
+
+    sessions(sess_id, fromD, toD, customer_id, activity_id) ## BCNF
+      Keys: sess_id
+      FDs: sess_id----->(fromD, toD, customer_id, activity_id)
+
+  # In summary, each table has a single-field key, an autoincremented integer that serves as the primary key.
+               
+###--------------------------------------------------------------------------------------------
+
+ -- The place for denormalized tables in a data warehouse:
+
+                                    denormalized              normalized
+            read-only acccess           /                         /            full CRUD access
+                      \        +----------------+        +------------------+      /
+     everyday users----------->| data warehouse |<-------| backend database |<----------DB admins
+                               +----------------+        +------------------+
+
+    ## Normalized tables tend to be 'skinny', which requires joins to extract info from multiple tables.
+
+    ## To make querying easier and faster, many organizations have a back-end normalized
+       DB, but expose a 'data warehouse' of denormalized tables for everyday employee use.
+
+       Example:
+
+       ## Two normalized tables in backend, normalized DB.
+       Employee(EmpId, FirstName, MiddleInit, LastName, Sal, JobCategory_Id)    ## BCNF
+          Key: EmpId
+          FDs: EmpId----->(FirstName, MiddleInit, LastName, Sal, JobCategory_Id)
+
+       JobCategory(JobCatId, Name, MinSal, MaxSal)                              ## BCNF
+          Key: JobCatId
+          FDs: JobCatId----->(Name, MinSal, MaxSal)
+
+       ## A query to job category info about employees: requires a join
+       SELECT Employee.EmpId, Employee.Sal, JobCategory.Name, JobCategory.MinSal, JobCategory.MaxSal FROM
+        Employee, JobCategory WHERE Employee.JobCategory_Id = JobCategory.JobCatId;
+
+       ## Denormalized table for our 'data warehouse', recreated daily
+       EmployeeDeNorm(EmpId, FirstName, MiddleInit, LastName, Sal, JobCategoryName, MinSal, MaxSal)
+
+       SELECT EmpId, Sal, JobCategoryName, MinSal, MaxSal from EmployeeDeNorm; ## No join required
+
+##-------------------------------------------------------------------------------------------------------
+
+ -- Normalized DBs and 'join' (in the informal sense) operations
+
+  # Normalization above 1NF requires (among other things) that there be no 'non-key' functional dependencies, that is,
+    dependencies from a non-key field to any other field.
+
+    ## The upshot is that normalized tables tend to be narrow -- a few fields.
+
+    ## Retrieval of info from the DB therefore may require access to _multiple_ tables: 'join' operations.

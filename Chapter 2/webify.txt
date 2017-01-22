@@ -1,0 +1,57 @@
+
+ -- Webifying an JDBC app
+
+ # JDBC access to a DB is straightforward in Java-based web apps.
+
+ # Various approaches are possible. Here's two obvious ones:
+
+   1. Use backend code (JavaBeans) to do the JDBC work, and then deliver the
+      results to a web page.
+
+   2. Use JSTL (Java Standard Template Library), part of JSP 2 and greater, to
+      access the DB.
+
+      -- The 2nd approach, popular in development and in single-page web apps, 
+         is illustrated in the forthcoming example.
+
+ # Artificats in the 'single-page' webification example:
+
+   -- web.xml: the standard deployment document, which sets the 'welcome page' to
+               index.jsp, a JSP template: a mix of HTML, CSS, and JSTL code.
+
+   -- styles.css: the CSS style sheet for visual design
+
+   -- index.jsp: the JSP page that reads from the recClub.db and presents the
+                 activities data in familiar tabular form
+
+   -- library files:
+
+        ## The JAR files that contain the API and implementation for JSTL
+
+        ## The JAR file that contains the driver for SQLite
+
+ # Packaging the artifacts:
+
+   -- A standard Java-centric web server such as Tomcat (used in this demo) has a 
+      dedicated subdirectory for deployed JAR files, which have a 'war' extension (Web Archive).
+    
+   -- The deployed app is thus called a 'WAR file'.
+
+   -- The demo includes a (documented) Ant script to package and deploy the web app. (If the
+      app contained Java source, the script would compile this code as well.)
+
+         ant -Dwar.name=activities deploy    ## command-line deployment of the demo app
+
+ # Gotchas for a file-based DB system such as SQLite
+
+   ## If we were using a server-based DB system such as MySQL, PostgreSQL, Oracle, SQL Server, DB2, etc.,
+      our app would connect to the DB server over a channel associated with a particular port number.
+
+      ### A URL for the DB server would provide the details.
+
+   ## For SQLite, by contrast, the URL points to a particular file on the local file system; hence,
+      we can have portability problems. More on this when we look at the code.
+
+                 
+
+

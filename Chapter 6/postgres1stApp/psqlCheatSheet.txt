@@ -1,0 +1,19 @@
+
+ -- Some commands for psql
+
+\help
+
+\x on                      ## expanded display in psql
+
+\l                         ## list all of the databases
+
+\connect recClub           ## connect to specified DB
+
+\dt                        ## show the tables in the current DB
+
+\dt *.*                    ## show the tables in all DBs
+
+\d+ employees              ## schema, index, and other info on employees table
+
+
+psql -E                    ## when starting psql: gives you the underlying SQL

@@ -1,0 +1,57 @@
+-- More on JOINs
+
+## Notice that there are no duplicates
+SELECT * FROM table_L UNION SELECT * FROM table_R;
+
+a
+b
+c
+d
+e
+f
+
+## Again, only the essential elements listed.
+sqlite> SELECT * FROM table_L INTERSECT SELECT * FROM table_R;
+c
+d
+
+## Equivalent to the above
+sqlite> SELECT * FROM table_L WHERE X IN (SELECT * FROM table_R);
+c
+d
+
+## Simulates a FULL OUTER JOIN operation because SQLite doesn't have "full outer join"
+sqlite> SELECT * FROM table_L LEFT OUTER JOIN Table_R ON X = Y
+UNION
+SELECT * FROM table_R LEFT OUTER JOIN table_L ON X = Y;
+
+a|
+b|
+c|c
+d|d
+e|
+f|
+
+## EXISTS versus IN
+
+sqlite> SELECT * FROM table_L WHERE X IN (SELECT Y FROM table_R);
+c
+d
+
+sqlite> SELECT * FROM table_L WHERE EXISTS (SELECT Y FROM table_R);
+a
+b
+c 
+d
+
+sqlite> SELECT * FROM table_L WHERE EXISTS (SELECT Y FROM table_R WHERE table_R.Y = table_L.X);
+c 
+d
+
+sqlite> SELECT * FROM table_L WHERE X IN (SELECT NULL);        ## set membership
+
+sqlite> SELECT * FROM table_L WHERE EXISTS (SELECT NULL);      ## boolean evaluation
+a 
+b 
+c 
+d

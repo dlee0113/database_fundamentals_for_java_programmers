@@ -1,0 +1,47 @@
+
+ -- Wrapup on transactions, hierarchical data, and triggers
+
+ # Transactions:
+
+   ## Ensure data integrity after 'mutating operations' such as INSERTs and UPDATEs.
+     
+   ## A transaction treats of sequence of DB operations as if it were a single, atomic, uninterruptible operation.
+
+      ### Some ACID properties, in particular Isolation, can be relaxed to promote efficiency and accessibility.
+
+   ## DB systems automatically wrap single-operations in transactions.
+
+      ### In JDBC, the Connection property autoCommit (setAutoCommit, getAutoCommit) has 'true' as its default value
+
+      ### Calling setAutoCommit(false) on a Connection instance _starts_ a transaction, which ends
+          with a call to either commit() or rollback(). 
+
+          #### A call to commit() does _not_ change the value of the autoCommit property.
+
+   ## JDBC has a property (isolationLevel) for tweaking the 'isolation level' in transactions, but
+      the real question is what the underlying DB system (and its JDBC driver) supports.
+
+      ### In general, the DB's default isolation level should be fine. The JDBC API is there for
+          cases where some tweaking may be in order.
+
+-----------------------------------------------------------------------------------------------------
+
+ # Hierarchical data:
+
+   ## As the OrgChart example illustrates, SQL has the wherewithal to represent data hierarchies; and,
+      with the SQL99 standard, SQL has the WITH RECURSIVE clause for traversing a data hierarchy in
+      either breadth-first or depth-first fashion.
+
+      ### SQLite3 supports (and, indeed, extends) the power of the WITH RECURSIVE clause, but
+          version 3.8.3 or greater is required.
+
+------------------------------------------------------------------------------------------------------
+
+ # Triggers
+
+   ## Triggers are an event-driven mechanism well suited to automating (and thereby simplifying)
+      DB operations.
+
+   ## One typical use is to have a change to one table (or view) 'trigger' a change to another:
+      we did this with the activities table (change to cost field) and the costchanges table (record
+      any cost change and timestamp it).

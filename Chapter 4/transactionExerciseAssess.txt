@@ -1,0 +1,67 @@
+
+ -- A closer look at fine-tuning transactions: the isolation level
+
+ # DB systems, during transactions, try to lock (a) as little as possible for (b) as short a time as possible.
+   The motive, of course, is efficiency and accessibility: if an app is doing a transaction that impacts only
+   one row of a table, other rows should be readable -- no need to lock the entire table.
+
+   ## Locking can be relaxed through various 'isolation levels', where Isolation is one of the ACID properties.
+
+ # A DB has a default isolation level, and the Connection type has an isolationLevel property. Here's the getter:
+
+         conn.getIsolationLevel(); // returns an int (see below)
+
+   ## If a DB supports different isolation levels, then JDBC can be used to pick one.
+
+   ## Typically, the default isolation level is the way to go; but, for fine-tuning, you may want to reset.
+
+ # Some common jargon about transactions to explain the isolation levels:
+
+   ## The Connection interface has five integer constants, including TRANSACTION_NONE (no isolation at all), that
+      specify the isolation level in a transaction. Of course, not every DB system may support all of these levels.
+
+      The relevant method on a Connection instance is setIsolationLevel(int level). Examples follow.
+
+   -- 'dirty read': 
+
+      ## Example: During a transaction TR1 involving a change to a table row ROW1, the same row is
+         read by another transaction TR2 _after_ the change has been made, but _before_ the change
+	 has been committed.
+                  
+                   However, transaction TR1 could be rolled backed so that ROW1 returns to its pre-transaction value.
+                   If there is such a rollback, the TR2 has done a 'dirty read' of row ROW1.
+
+                   To prevent a 'dirty read' is to prevent a value involved in a transaction from being read at all
+                   until there's a commit. In short, all reads outside the transaction are blocked.
+
+                   In JDBC, a setting of 
+
+                      conn.setIsolationLevel(TRANSACTION_READ_COMMITTED);    ## SQLite supports this
+ 
+                   prevents 'dirty reads'.
+
+   -- 'non-repeatable read': 
+
+      ## Example: Transaction TR1 reads ROW1, but transaction TR2 thereafter updates ROW1. After this update, TR1
+                  again reads ROW1 -- but the two read operations do _not_ yield the same result. The 1st read is
+                  not 'repeated'. (The read operation in general is not 'idempotent'.)
+
+                  In JDBC, a setting of
+
+                     conn.setIsolationLevel(Connection.TRANSACTION_REPEATABLE_READ) 
+
+                  prevents 'non-repeatable reads'.
+
+   -- 'phantom read':
+
+      ## Example: Transaction TR1 retrieves a set of, say, 3 rows from a table using some WHERE condition.
+         Transaction TR2, after this TR1 retrieval, inserts a _new_ row into the table, and the new row
+	 satisfies the WHERE condition. TR1 now does the same retrieval (SELECT...WHERE) again, but
+	 gets 4 rows instead of 3. The new row is the 'phantom read'.
+
+                  In JDBC, a setting of
+
+                     conn.setIsolationLevel(TRANSACTION_SERIALIZABLE);       ## SQLite supports this: the default
+
+                  prevents 'phantom reads'. (It also prevents 'non-repeatable reads' and 'dirty reads'.
+       

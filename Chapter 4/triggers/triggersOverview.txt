@@ -1,0 +1,35 @@
+
+ -- What's a DB trigger?
+
+  # Recall an earlier example: a user changes a password (users table), and we track such changes
+    in another table (pwdchanges), using an explicit transaction to ensure both operations get
+    done together -- or not at all.
+
+    ## We're going to do the same sort of thing, but in a different way: by using a 'trigger' that
+       handles an event, in this case a change to the 'cost' field in the recClub activities table.
+
+  # Event-driven programming can be found almost everywhere, and it extends to DB programming with triggers.
+
+    ## Working definition: A 'trigger' is a DB operation performed automatically in response to some event.
+
+       Example: We want to track changes to activity cost. Similar to the earlier example of tracking changes to
+                a user's password, but now we'll take an 'event-driven' approach.
+		
+
+          activities(id, name, cost)                       
+
+          costchanges(id, oldcost, newcost, whenT) 
+
+                              +------------+ triggers an update to  +-------------+
+         update a cost------->| activities |----------------------->| costchanges |
+                              +------------+                        +-------------+
+
+    ## Various implementations are possible. For example, there might be a DB 'stored procedure' in some
+       DB-specific language, or a standard SQL operation.
+
+    ## A DB trigger might 'touch' a file on the local disk to signal some other application that
+       a change has occurred to some table in the DB.
+
+  # Updating the recClub DB to handle a trigger: the code is in the file trigger.sql.
+
+  # The TriggersExample.jar file runs a test.

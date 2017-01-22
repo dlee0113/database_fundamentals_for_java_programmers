@@ -1,0 +1,57 @@
+
+ -- Relationships among tables: data modeling in JPA
+
+ # In the recClub example, 'customers' and 'activities' have no explicit relationship to one another.
+
+   ## The 'join table' is 'sessions', which links customers to activities during specified
+      time segments. The linking is done through foreign keys:
+
+           CREATE TABLE sessions (sess_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                                  fromD DATE NOT NULL, 
+                                  toD DATE NOT NULL, 
+                                  customer_id INTEGER,                                       ## foreign key
+                                  activity_id INTEGER,                                       ## foreign key
+                                  FOREIGN KEY(customer_id) REFERENCES customers(cust_id)     ## link to customer
+                                  FOREIGN KEY(activity_id) REFERENCES activities(act_id));   ## link to activity
+---------------------------------------------------------------------------------------------------------------------
+
+ # The three standard DB relationships are:
+
+     -- OneToOne 
+
+     -- OneToMany, with ManyToOne as the inverse
+
+     -- ManyToMany
+
+    ## OneToMany relationships are the most common.
+
+       Example from our fictitious organization, but many organizations are like this:
+
+       -- An Employee belongs to exactly one Department.
+
+       -- A Department may have (and typically does have) many Employees.
+
+                ManyToOne
+       Employee----------->Department     ## many Employees in one Department
+
+                  OneToMany
+       Department----------->Employee     ## one Department with many Employees
+--------------------------------------------------------------------------------------------------------------------
+
+ # JPA supports explicit 'data modeling' of relationships through either annotations or XML (or a mix of the two).
+
+   ## The relationships automate some operations at the DB level: a code example follows.
+
+   ## The main relationship annotations of interest are:
+
+      @OneToOne          ## Each Employee instance has a corresponding EmployeeDetails instance
+ 
+      @OneToMany         ## Department to Employee
+
+      @ManyToOne         ## Employee to Department
+
+      @ManyToMany        ## Employee to Project
+
+   ## There are other, supporting annotations that we'll see in the code example.
+
+   ## As usual, JPA offers more than one way to do relationships.

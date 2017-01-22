@@ -1,0 +1,58 @@
+
+ -- Relational DBs and data hierarchies: How to manage the apparent mismatch in structures
+
+  # The table is well suited to represent hierarchical data. Consider the forthcoming orgChart table:
+
+       CREATE TABLE orgchart(
+         name VARCHAR(24) PRIMARY KEY,                 ## employee's name
+         reportsTo VARCHAR(24) REFERENCES orgchart);   ## person employee reports to
+
+    ## The issue is how, in an RDBMS, to process hierarchical data in a natural, intuitive way.
+
+    ## SQL99 standardized the WITH RECURSIVE clauses, which supports 'recursive walks' of data hierarchies ('trees').
+
+  #  Here's a sample OrgChart, with the implementing SQL shown below:
+
+                                          Carol                              ## big boss
+                                            |
+                       +--------------------+--------------------+
+                       |                    |                    |
+                     Alice                 Bob                  Ted          ## direct reports to big boss
+                       |                    |                    |
+                +------+------+      +------+------+      +------+------+
+                |      |      |      |      |      |      |      |      |
+              Edna   Joyce  Edgar   Al    Maria   Nick   Ruth   Ky     Nina  ## and so on...
+                |             |                                  |
+               Joe          Terry                              Petra              
+               
+
+  # Tree traversals: breadth-first (each level in turn, left to right) and depth-first (top-to-bottom, left-to-right)
+
+    -- Breadth-first traversal of the sample tree:
+
+       Carol Alice Bob Ted Edna Joyce Edgar Al Maria Nick Ruth Ky Nina Joe Terry Petra 
+
+    -- Depth-first traversal of the sample tree:
+
+       Carol Alice Edna Joe Joyce Edgar Terry Bob Al Maria Nick Ted Ruth Ky Petra Nina           
+
+   ## We need formatting to show the hierarchical structure.
+
+----------------------------------------------------------------------------------------------------------------------
+
+# Setting up the DB: keep in mind we need SQLite >= 3.8.3
+
+1. We'll put the setup SQL in the file 'commands.sql': any name would do.
+
+2. From the command-line, create the DB then execute the '.read' commmand within SQLite:
+
+    sqlite3 hierarchy.db
+      sqlite> .read commands.sql
+
+3. The breadth-first search is in the file 'bfs.sql', and can be executed the same '.read' command.
+
+4. The depth-first search in in  the file 'dfs.sql', and can be executed with the same '.read' command.
+
+In SQL, the 'double pipe' symbol || is _not_, as in Java, boolean OR but rather the string concatenation operator.
+
+

@@ -1,0 +1,69 @@
+
+ -- Overview of NoSQL databases
+
+  # Motivation:
+
+    -- Consider a simple web-based app that retrieves data from the cloud, and then stores the
+       data on the local file system using the URL as the file name. We have:
+             
+                key                                value
+                 \                                   /
+           localFileName---------------->downloaded data stored in the file 
+                 /                                    \
+           URL for the document            document fetched from URL
+
+    -- This is a very simple "key/value" data store, a 'persistent map'.
+
+       ## Functionality (e.g., file locking, searching) comes from standard system utilities or hand-written code. 
+
+    -- The NoSQL DBs, now rich in variety and functionality, build upon this very basic idea: key/value data stores.
+
+    -- NoSQL DBs are typically server-based, perhaps clusters of servers and even distributed clusters.
+
+ # Sample NoSQL DBs:
+
+   -- MongoDB            ## JPA support from EL
+
+   -- OracleNoSQL        ## ditto
+
+   -- Cassandra          ## casandra-jdbc driver, but may not work with >= version 2.0
+
+   -- Apache Hadoop      ## JDBC driver for the Hive2 server (recommended) and the Hive1 server (not recommended)
+
+   -- CouchDB            ## couchdb driver 
+
+ # Upsides of the NoSQL approach:
+
+   -- Simplicity
+
+   -- High-performance
+
+   -- Flexibility
+
+   -- Ease of programming
+
+ # Downsides of the NoSQL approach;
+
+   -- No underlying mathematical model, as is the case for relational DBs
+
+   -- Ad hoc queries, which require searching, may be slow
+
+      ## Query languages differ widely across systems.
+
+   -- Data integrity (esp. consistency) challenges, in particular for 'distributed DBs' that 'shard' the data 
+      across different machines
+
+      ## Most systems have locking of some variety, but not 1st-class transactions in the commit/rollback sense.
+
+   -- Lack of standardization in data storage and processing
+
+      ## For example, porting data from one relational system (SQLite) to another (PostgreSQL) may be quirky,
+         but the underlying SQL is quite close.
+
+
+
+
+
+ 
+
+

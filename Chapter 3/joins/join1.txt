@@ -1,0 +1,158 @@
+
+  -- Why the jump from table design to JOINs?
+
+   # Well-designed tables tend to be 'skinny', with a relatively small number of columns: with lots of
+     columns, it's harder to avoid non-key functional dependencies. With relatively narrow tables, however,
+     retrieving desired info from the DB may require going against _multiple_ tables -- a JOIN operation.
+
+     Example: 
+
+        Employee(Id, Fname, Mi, Lname, Sal, JobCategory_Id)  ## Id ---> (Fname,...,JobCategory_id)
+        JobCategory(Id, Name, MinSal, MaxSal)                ## Id ---> (Name, MinSal, MaxSal)
+
+     For instance, we need a JOIN to get the last names, salaries, and maximum salaries of all accountants.
+     Assume an account has JobCategory_Id 9876:
+
+     SELECT Employee.Lname, Employee.Sal, JobCategory.MaxSal FROM Employee, JobCategory    ## the two joined tables
+       WHERE JobCategory.Name = 'Accountant' AND Employee.JobCategory_Id = JobCategory.Id;
+
+   # Joins often are the price to be paid for a well-designed DB.
+
+   # Literal and informal senses of 'join': a query is literally a JOIN if this keyword occurs in it,
+     but informally a JOIN if the query involves more than one table/view.
+
+-----------------------------------------------------------------------------------------------------------
+
+  -- Join types
+
+ # Big picture: a table is a _set_ of rows (order doesn't count, there shouldn't be duplicate rows)
+                a row is a _set_ of columns (order doesn't count, there shouldn't be duplicate columns)
+
+   -- SQL thus supports 'set operations' on tables (and views), some of which we've seen. For instance,
+      with subqueries a typical pattern is:
+
+                                              set membership
+                                                   /
+          SELECT name FROM employess WHERE emp_id IN (SELECT employee_id FROM...)
+                                                        /
+                                           a set generated from a subquery: done _before_ the IN is evaluated
+
+   -- Other standard set operations are:
+
+      ## Cartesian product: all members of one table/view combined with those of another table/view
+
+      ## Intersection: all members that are in _both_ sets
+
+      ## Union: all members that are in at least _one_ set
+
+   -- These standard set operations have various names in SQL, which'll be introduced and clarified by examples.
+
+###--------------------------------------------------------------------------------------------------------------------
+
+ # Sample tables, deliberately simple with a single column each:
+
+ table_L  table_R
+
+   X        Y
+  ---      ---
+   a        c         ## c and d are in both tables
+   b        d         ## a and b are in table_L only
+   c        e         ## e and f are in table_R only
+   d        f
+
+  ## table_L is the 'left' table, and table_R is the 'right' table.
+--------------------------------------------------------------------------
+
+ # Cross join: Cartesian product
+
+   SQL: SELECT * FROM table_L CROSS JOIN table_R;      ## explicit CROSS JOIN
+        SELECT * FROM table_L, table_R;                ## equivalent but simpler syntax
+
+   Resulting view: (16 rows)
+
+     X    Y
+    --------
+     a    c
+     a    d
+     a    e
+     a    f
+     b    c
+     b    d
+     b    e
+     b    f
+     c    c
+     c    d
+     c    e
+     c    f
+     d    c
+     d    d
+     d    e
+     d    f
+
+--------------------------------------------------------------------------
+
+ # Inner join: set intersection 
+
+   SQL: SELECT * FROM table_L INNER JOIN table_R ON table_L.X = table_R.Y;
+
+   Resuling view (2 rows):
+
+     X    Y
+    --------
+     c    c
+     d    d
+--------------------------------------------------------------------------
+
+ # Outer joins: variations on set union
+
+   ## Full outer join: set union 
+
+       SQL: SELECT * FROM table_L FULL OUTER JOIN TABLE_R on table_L.X = table_R.Y;  ## not supported in SQLite3
+
+       Resulting view (6 rows):
+
+         X      Y
+        ----------
+         a    
+         b    
+         c     c
+         d     d
+               e
+               f
+
+        -- CHECK ON THIS: SQLite doesn't support a full outer join. Quick exericse: how would you get this result
+                          some other way?
+
+    ## Left outer join (with table_L as the 'left' table): all rows in table_L, plus matching rows in table_R
+
+       SQL: SELECT * FROM table_L LEFT OUTER JOIN table_R ON table_L.X = table_R.Y;
+
+       Resulting view (4 rows):
+
+       X     Y
+      ----------
+       a   
+       b   
+       c    c
+       d    d
+
+    ## Right outer join (with table_R as the 'right' table): all rows in table_R, plus matching rows in table_L
+
+       SQL: SELECT * FROM table_L RIGHT OUTER JOIN table_R ON table_L.X = table_R.Y;
+
+       Resulting view:
+
+        X     Y
+       ----------
+        c     c
+        d     d
+              e
+              f
+ 
+       ### SQLite currently does _not_ support right outer joins, but the same effect can be had by taking the
+           left outer join shown above and reversing the table positions:
+
+           SQL: SELECT * FROM table_R LEFT OUTER JOIN table_L ON table_L.X = table_R.Y;
+ 
+
+

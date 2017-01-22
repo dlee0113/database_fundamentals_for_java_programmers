@@ -1,0 +1,41 @@
+
+ -- Wrapup of NoSQL DBs
+
+  # In general, lighter-weight than their RDBMS counterparts, but also far less standardized.
+
+    ## Functionality taken for granted in the RDBMS world (e.g., transactions, schemas as
+       type constraints) may be present in limited form -- or not at all -- in a NoSQL system.
+
+  # We used MongoDB as an example of a NoSQL system.
+
+    ## In my view, the best Java API among the NoSQL DBs -- and this API gets improved regularly.
+
+    ## The Java API is a thin wrapper around the JavaScript that is, in effect, the
+       native language for a MongoDB client. 
+
+       ### The Java API wraps the functionality of the Mongo 'shell' (client).
+
+    ## The Mongo driver/API code comes in a single JAR file.
+
+  # MongoDB is either the most popular or, at least, among the most popular NoSQL systems.
+    See, for instance: http://www.kdnuggets.com/2016/06/top-nosql-database-engines.html
+
+  # MongoDB is typical NoSQL in it's basically a document-oriented datastore system, with document collections
+    as file contents.
+
+  # From the programmers point of view, the CRUD operations are implemented as:
+
+    -- creating a new (JSON) document (e.g., a new customer document)
+
+    -- reading one or more documents from a specified collection (e.g., 'activities')
+       ## Various filters, including regex-based ones, can be used.
+
+    -- updating an existing document (one or more fields at a time)
+
+    -- deleting a specified document
+
+  # At the implementation level, MongoDB is 'server-based' and stores collections (together with
+    supporting artifacts such as indexes and locks) on the local file system.
+
+  # MongoDB works well in a web environment, as its stored entities are JSON documents: data or code
+    

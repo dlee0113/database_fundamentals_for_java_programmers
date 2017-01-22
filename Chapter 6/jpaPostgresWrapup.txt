@@ -1,0 +1,34 @@
+
+ -- Wrapup of 'advanced' JPA and PostgreSQL
+
+  # To use advanced features such as data modeling with relationship annotations (@OneToMany, etc.),
+    we had to move from SQLite ("server-less" RDBMS) to PostgreSQL (a full-fledged, "server-based" RDBMS).
+
+    ## SQLite doesn't support all of the SQL constructs that the JPA engine generates.
+
+    ## PostgreSQL has a sufficiently expressive SQL implementation to handle whatever JPA needs.
+  
+    ## PostgreSQL is also a heavy-duty RDBMS, with all of the features one would expect from a commercial RDBMS.
+ 
+  # JPA has four annotations that can be used to specify and thereby model table relationships:
+
+       -- @OneToOne
+
+       -- @OneToMany     ## Department to Employee in the EmpDept app
+
+       -- @ManyToOne     ## Employee to Department in the EmpDept app
+
+       -- @ManyToMany
+
+    ## The modeling also could be done in an XML config file.
+
+    ## These annotations also off-load some work from the programmer.
+
+       -- In particular, an idiomatic Java call such as
+
+             List<Employee> dept.getEmployees();  ## idiomatic Java call in a JPA context
+
+          actually retrieves data from the underlying DB.
+      
+
+

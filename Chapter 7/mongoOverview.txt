@@ -1,0 +1,34 @@
+
+ -- Overview of MongoDB
+
+  # A NoSQL DB system, but with a document (in particular, JSON) orientation.
+
+  # A 'server-based' DB: the 'mongod' ('d' for 'daemon' == background process) is the server
+
+    ## You start MongoDB on a system by starting 'mongod'.
+
+    ## There's a MongDB client ('shell') named 'mongo', which can be run from the command-line.
+
+  # Supports various types of queries, including regular-expression searches.
+    ## JavaScript can be used as the query language.
+
+  # Implements 'data replication' to make data sets readily available to clients.
+
+  # Also implements 'load balancing' through 'sharding' (that is, distributing) of data: data collections
+    in a DB may be distributed 'horizontally' across various physical machines.
+
+  # Supports 'map/reduce' in the sense of scatter/gather: scatter the pieces of a problem across
+    Mongo processes, then gather the results together.
+
+  # There's a free community edition.
+
+  # Installation and setup are relatively straightforward.
+
+  # Important URLs:
+
+     https://docs.mongodb.com/v3.2/administration/install-community/	             ## Downloads-instructions for OSes
+
+     http://central.maven.org/maven2/org/mongodb/mongo-java-driver/3.4.0-rc1/        ## Java driver used in the examples
+
+     http://www.eclipse.org/downloads/download.php?file=/rt/eclipselink/releases/  \ ## JPA extensions for MongoDB
+       2.6.4/eclipselink-plugins-nosql-2.6.4.v20160829-44060b6.zip

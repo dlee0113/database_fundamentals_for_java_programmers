@@ -1,0 +1,41 @@
+
+ % mongo                       ## % is the command-line prompt
+
+ > show dbs                    ## show available databases
+ > use recClub                 ## switch to recClub database
+ > show collections            ## for recClub: customers, activities, sessions
+
+ Then it's basically JavaScript...
+
+ > coll = db.activities        ## 'db' is recClub, so it's recClub.activities
+ > coll.find()
+ 
+ { "_id" : ObjectId("5810f82379e6a6564f06474f"), "id" : 33, "name" : "squash", "cost" : 63.32413864135742 }
+ { "_id" : ObjectId("5810f82379e6a6564f064750"), "id" : 34, "name" : "3-on-3 basketball", "cost" : 44.61915969848633 }
+ { "_id" : ObjectId("5810f82379e6a6564f064751"), "id" : 35, "name" : "tiddly winks", "cost" : 52.399688720703125 }
+ { "_id" : ObjectId("5810f82379e6a6564f064752"), "id" : 36, "name" : "tennis", "cost" : 38.71977233886719 }
+ { "_id" : ObjectId("5810f82379e6a6564f064753"), "id" : 37, "name" : "basic spinning", "cost" : 43.85448455810547 }
+ { "_id" : ObjectId("5810f82379e6a6564f064754"), "id" : 38, "name" : "intermediate spinning", "cost" : 14.74713134765625 }
+ { "_id" : ObjectId("5810f82379e6a6564f064755"), "id" : 39, "name" : "insane spinning", "cost" : 43.84769821166992 }
+ { "_id" : ObjectId("5810f82379e6a6564f064756"), "id" : 40, "name" : "swimming", "cost" : 14.248628616333008 }
+ { "_id" : ObjectId("5810f82379e6a6564f064757"), "id" : 41, "name" : "water polo", "cost" : 12.078277587890625 }
+ { "_id" : ObjectId("5810f82379e6a6564f064758"), "id" : 42, "name" : "diving", "cost" : 17.4063720703125 }
+ { "_id" : ObjectId("5810f82379e6a6564f064759"), "id" : 43, "name" : "rock climbing", "cost" : 59.939266204833984 }
+ { "_id" : ObjectId("5810f82379e6a6564f06475a"), "id" : 44, "name" : "skate boarding", "cost" : 56.8631591796875 }
+ { "_id" : ObjectId("5810f82379e6a6564f06475b"), "id" : 45, "name" : "chess", "cost" : 36.737213134765625 }
+ { "_id" : ObjectId("5810f82379e6a6564f06475c"), "id" : 46, "name" : "go", "cost" : 39.19116973876953 }
+ { "_id" : ObjectId("5810f82379e6a6564f06475d"), "id" : 47, "name" : "checkers", "cost" : 46.054203033447266 }
+ { "_id" : ObjectId("5810f82379e6a6564f06475e"), "id" : 48, "name" : "judo", "cost" : 50.23297882080078 }
+ { "_id" : ObjectId("5810f82379e6a6564f06475f"), "id" : 49, "name" : "akido", "cost" : 16.78236198425293 }
+ { "_id" : ObjectId("5810f82379e6a6564f064760"), "id" : 50, "name" : "boxing", "cost" : 35.145973205566406 }
+ { "_id" : ObjectId("5810f82379e6a6564f064761"), "id" : 51, "name" : "wrestling", "cost" : 16.94352912902832 }
+ { "_id" : ObjectId("5810f82379e6a6564f064762"), "id" : 52, "name" : "extreme fighting", "cost" : 12.279293060302734 }
+
+ db.collection.insert()	          ## insert a new document into the collection.
+ db.collection.update() 	  ## update an existing document in the collection.
+ db.collection.save()	          ## either insert a new document or update an existing document in the collection.
+ db.collection.remove()	          ## delete documents from the collection.
+ db.collection.drop()	          ## drop the collection.
+ db.collection.createIndex()	  ## create an index on the collection; if index already present, a no-op
+
+ > quit()

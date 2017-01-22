@@ -1,0 +1,44 @@
+
+ -- Downloading, installing, and running PostgeSQL
+
+  # Download page: https://www.postgresql.org/download/
+
+    ## There are 'installers' for all of the major OSes: pick the one that fits your system.
+
+    ## Current version is 9.x
+
+ -- Setting up a username/password for PostgreSQL, with '%' as the command-line prompt:
+
+  # When you install PostgreSQL via the installer, you'll be prompted about the 'superuser' password,
+    where the 'superuser' is the DB admin -- not the 'superuser' at the OS level.
+
+    ## The PostgreSQL 'superuser' is the user who's doing the install.
+
+    ## For security reasons, don't make the PostgreSQL 'superuser' password the same as the OS 'root password'.
+
+ -- It's best to reserve the PostgreSQL 'superuser' for admin duties. For convenience, we'd
+    like another PostgreSQL user who can perform the standard CRUD operations. 
+
+    # Many ways to do the above. Here's one:
+
+    1. In a normal install of PostgreSQL, the installer starts PostgreSQL after installing.
+
+    2. Open the 'psql' interface to PostgreSQL (from GUI or command-line).
+       The 'psql' utility is included in the normal installation.
+
+          psql
+
+    2. Enter this command at the 'psql' prompt:
+
+           create role fred superuser login;        ## 'role' is effectively 'user'
+
+    3. Enter this command at the prompt:
+
+           alter role fred with password 'secret';  ## set the password for fred
+
+    4. Enter this command at the prompt:
+
+           create database recClub;                 ## create an empty database, in this case for the recClub data
+
+    5. \q
+

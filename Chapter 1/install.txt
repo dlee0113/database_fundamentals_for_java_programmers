@@ -1,0 +1,62 @@
+
+ -- Software installation 
+
+ # Core Java: current version of the standard edition (e.g., Java8 SE) is best
+
+   ## core Java 5 or greater will do, but the more recent, the better
+
+   ## URL: http://www.oracle.com/technetwork/java/javase/overview/index.html   
+
+ # SQLite (current version is 3)
+
+   ## Check if you already have it. From the command-line: 
+
+         sqlite3 --version
+
+   ## URL: https://www.sqlite.org/download.html
+
+   ## Quick installs for various platforms (Windows, Mac OSX, Linux)
+
+ # Apache Ant (if you want to use my build script): https://ant.apache.org/bindownload.cgi
+
+   ## You may have Ant installed already. At the command line, try: ant -version
+ 
+####--------------------------------------------------------------------------
+
+ -- Why SQLite?
+
+ # It's as simple as a relational database system gets:
+
+   ## There's no DB server to start, stop, and otherwise maintain.
+
+      ### Persistent databases are implemented as files on the local system.
+
+      ### An in-memory only database is created with the SQLite command 'sqlite3' with no argument.
+          The SQLite client then allows interaction with the DB. (The in-memory DB can be saved later, 
+	  if you like.)
+
+   ## There's no configuration.
+
+      ### SQLite is basically a software library under 500KB in size.
+
+   ## It's self-contained, language-neutral, and platform-neutral.
+
+      ### We'll be using mostly Java, but other languages too as proof-of-concept.
+
+   ## It's still the real deal, an SQL-accessible DB that supports the 
+      ACID (Atomic, Consistent, Isolated, and Durable) properities (more on these later).
+
+      ### The same point can be made byu saying that SQLite is a 'trasactional DB',
+          as it's a transaction that ensures the ACID properties.
+
+   ## It's free. 
+
+ ####--------------------------------------------------------------------------
+
+ -- What about no-SQL databases?
+
+ # That's coming later. For now, SQLite is what's needed.
+
+
+
+

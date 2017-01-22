@@ -1,0 +1,63 @@
+
+ -- Course wrapup
+
+  # Congrats! You've been through lots of technical detail: multiple DB systems, multiple APIs, many code examples
+
+  # The DB system wrapup:
+
+    ## SQLite3: lightweight, 'server-free' DB system 
+
+       -- Great for development, fine for department-level apps
+
+       -- Full support for transactions (covers the ACID properties)
+
+       -- Reasonable implementation of SQL
+
+   ## PostgreSQL: best-in-show for the freebie, yet industrial-strength RDBMSes.
+
+       -- Excellent implementation of SQL
+
+       -- Useful modern extensions such as the JSON type for table fields
+
+       -- If you're looking for a free but excellent system, give PostgreSQL a close look
+
+   ## MongoDB: most popular (or, at least, close to the most popular) NoSQL systems
+
+       -- JSON-centric, as databases consist of collections of JSON documents
+
+       -- JavaScript is the default client language (e.g., in the mongo 'shell')
+
+       -- The Java API nicely wraps the JavaScript, and the API is regularly improved.
+
+       -- Lightweight, easy-to-use DB system that doesn't have the full functionality of
+          an RDBMS, but neither does it have the full complexity of a RDBMS.
+
+------------------------------------------------------------------
+
+  # The API wrapup
+
+    ## JDBC: close-to-the-metal, a thin wrapper around SQL with some conveniences for
+             translating between Java and SQL types.
+
+       ### A very thin software layer between a Java app and a relational DB system: high performance
+
+       ### The default choice: if you're not sure about what to use, start here until there's a good reason
+           to move up.
+
+    ## JPA: the next step up -- Java's standard ORM
+
+       ### Hides many of the low-level details of interacting with the DB.
+
+       ### Focus is on Java idioms, not on DB peculiarities.
+
+       ### Automates a lot.
+
+       ### Supports in-code data modeling (e.g, for relationships)
+
+       ### Excellent implementations ('providers'), including EclipseLink and Hibernate
+
+
+    
+
+
+

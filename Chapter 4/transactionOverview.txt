@@ -1,0 +1,94 @@
+
+-- SQLite and transactions
+
+ # A quick, working definition: 
+
+    A 'transaction' is a sequence of operations (even a sequence of one operation) treated as if it
+    a single, atomic operation.
+
+    A transcation is either 'committed', which means the encapsulated operations take effect, or 'rolled back',
+    which means any operations done so far are, in effect, undone.
+
+ # Transactions must be implemented so that they exhibit the ACID properties clarified below.
+                        
+ # Modern RDBMes adhere to the principle that a database cannot be changed without a transaction:
+   the 'C', 'U', and 'D' in CRUD
+
+ # In effect, commands other than SELECTs must occur in a transaction -- started either automatically or explicitly.
+
+   ## Details differ from implementation to implementation, but the general approach is this:
+
+      -- Each _single_ mutating operation (e.g., an INSERT or an UPDATE) automatically is wrapped automatically in
+         a transaction if the programmer does not do so explicitly.
+
+      -- An explicit (programmer-defined) transaction is required if more than one command is to be part of the
+         _same_ transaction:
+
+                BEGIN;                     ## BEGIN TRANSACTION is the long form
+                   INSERT into...
+                   UPDATE ...
+                END;                       ## END TRANSACTION is the long form
+                                           ## COMMIT can be used in place of END TRANSACTION
+ 
+sqlite> SELECT * FROM customers;
+
+1|Marge1
+2|Gracie2
+3|Pebbles3
+...
+32|Homer32
+
+### explicit transaction 
+sqlite> BEGIN;
+sqlite> INSERT INTO customers(name) VALUES(Pandora1);
+sqlite> COMMIT;    ### or END;
+
+sqlite> SELECT * FROM customers;
+
+1|Marge1
+2|Gracie2
+3|Pebbles3
+...
+32|Homer32
+33|Pandora1
+
+### rollback example
+
+sqlite> SELECT * FROM customers WHERE name = 'Curly25';
+
+25|Curly25                                               ## Curly25 is there
+
+sqlite> BEGIN;
+sqlite> DELETE FROM customers WHERE name = 'Curly25';
+sqlite> SELECT * FROM customers where name = 'Curly25';  ## still within transaction
+                                                         ## Curly25 is apparently gone
+sqlite> ROLLBACK;                                        ## undo the DELETE
+
+sqlite> SELECT * FROM customers where name = 'Curly25';  ## transaction was rolled back...
+25|Curly25                                               ## Curly25 is still there
+
+-------------------------------------------------------------------------------------------------
+
+Transactions ensure the ACID properties, which are essential for a sound database system.
+Here's a quick description of each property:
+
+Atomicity: 
+  -- All operations within a transaction occur as if they were a single, atomic, uninterruptible operation.
+  -- Either everything within a transaction succeeds or nothing does.
+  -- In a multi-operation transaction, failure of a single operation causes rollback.
+
+Consistency: 
+  -- A transaction ensures that changes made within the transaction are consistent once committed.
+     For example, if a transaction raises every employee's pay by 5%, then all of the raises are
+     in place once the transaction is committed -- there are no exceptions.
+
+Isolation: 
+  -- Transactions operate independently of one another.
+  -- What goes on in one transaction is not visible to any other transaction.
+  -- Each transaction has its own internal state, which remains private until a commit occurs.
+
+Durability: 
+  -- The results of a committed transaction persist, even if the database system should happen to 
+     fail after commitment.
+
+

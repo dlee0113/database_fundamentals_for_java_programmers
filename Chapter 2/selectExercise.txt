@@ -1,0 +1,33 @@
+
+ -- Exercise in writing SELECT queries
+
+ # Use the recClub.db, which can generated using the BuildTablesUtil.jar program, to write some arbitrary queries:
+   look at the tables, figure out what kind of info might be interesting retrieve, and go for it.
+
+   ## The SelectQueries.java can be used to get some ideas.
+
+ # As part of the exercise, compare the advantages of the PreparedStatement over the Statement type. Here's an example
+   from SelectQueries.java:
+
+    SELECT name FROM customers WHERE cust_id IN 
+     (SELECT customer_id FROM sessions WHERE activity_id IN
+       (SELECT act_id FROM activities WHERE name = 'go'));     ## name = <some string>, <some string> must be in quotes
+
+   ## In this case, the name of the activity ('go') is hard-wired into the query, as the point of the
+      example is to show nested SELECT statements.
+
+   ## But consider the WHERE construct more closely:
+
+           WHERE <column attribute> = <value>
+
+      If the <value> is a string (TEXT in SQLite), then it must be quoted (simple or double quotes):
+
+           WHERE name = 'go'    ## ok
+           WHERE name = "go"    ## ok
+           WHERE name = go      ## not ok
+
+   ## The issue for now is data-type conversion: between Java, on the one side, and SQLite, on the other side.
+
+
+
+  

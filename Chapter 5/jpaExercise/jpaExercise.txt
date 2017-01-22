@@ -1,0 +1,59 @@
+
+ -- A code exercise using JPA
+
+  # The goal is simply to get something up and running: the DB details aren't so important.
+
+    ## The basics to cover are:
+
+       -- Use the persistence.xml file to define the 'persistence unit', and to enable automatic
+          table-schema generation.
+
+       -- Define at least one @Entity class, with the appropriate annotations. Try experimenting here.
+
+       -- Define a 'driver' class that encapsulates main. This class should:
+
+          ### Use the EntityManager to persist several instances of your @Entity class.
+
+          ### Run some queries against the DB using JPQL. If you've time, try a 'native query' as well.
+
+              -- The EntityManager class has a createNativeQuery(String) method.
+
+    ## If SQLite is the DB, it's best _not_ to experiment with relationships such as @OneToOne and the like.
+
+       ### We'll get to these, but only after switching to PostgreSQL.
+
+  # If you use my Ant script (build.xml, included in jpaExercise.zip), the directory structure should be;
+
+                                    cwd   ## current working directory, includes build.xml
+				     |    ## Ant command:  ant -Djar.name=Exercise  
+	           +-----------------+-----------------+
+		   |                 |                 |
+	        META-INF            lib               src
+		  /                  /                 \
+           persistence.xml	four JAR files	    your source code
+
+ ------------------------------------------------------------------------------------------------------------
+
+  -- Key differences between the Java EE and Java SE environments when it comes to JPA
+
+  # In an Java EE environment, a 'container' is in play:
+
+    -- A 'web container' for web stuff (e.g., the Catalina web container that comes with the Tomcat web server).
+
+    -- An 'EJB container' for EJBs (Enterprise Java Beans, in particular Session EJBs).
+
+  # The 'container' takes over some tasks otherwise left to the programmer. In particular:
+
+    -- A Java EE container does 'auto-detection' of @Entity classes by detecting the annotation.
+
+    -- In Java SE, there's _no_ guarantee of 'auto-detection'; indeed, the default for 'auto-detection' is false.
+
+    -- A Java EE container does 'dependency injection' for the EntityManager. In Java SE, the programmer needs
+       explicitly to get an EntityManagerFactory, which in turn creates an EntityManager instance.
+
+
+
+
+
+
+    

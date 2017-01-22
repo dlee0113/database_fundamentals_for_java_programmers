@@ -1,0 +1,46 @@
+
+ -- From JDBC to JPA (Java Persistence API)
+
+  # JDBC is low level, close to the metal, a thin wrapper around SQL -- some of ways you'll hear JDBC described.
+
+    ## Such descriptions aren't knocks against JDBC, which represents a minimal layer between a JDBC app and
+       the DB driver -- so JDBC is efficient and flexible.
+
+    ## JDBC may be just what an app requires: no more, no less.
+
+    ## The Connection, Statement (especially PreparedStatement), ResultSet, and other types ease the task
+       of generating the appropriate SQL and handling what's returned from queries.
+
+    ## In summary, JDBC doesn't get in the way of writing 'native SQL', but does provide some conveniences
+       to app programmers.
+
+  # JPA is a higher-level API than JDBC, and addresses issues beyond JDBC's scope.
+
+    ## JPA abstracts from many of the details that are front and center in JDBC.
+
+  # JPA is Java's API for ORM (Object-Relational Mapping): an instance of a class maps to a DB entity such
+    as the row in a table:
+
+                         properties defined via getters/setters     columns (attributes) matching Java properties
+                                             /                                       /
+                               new  +-------------------+    mapping    +----------------------------+
+               class Employee ----->| Employee instance |<------------->| row in the employees table |
+                                    +-------------------+               +----------------------------+
+
+  # JPA defines a QL (query language) that smooths out the differences among native SQL implementations.
+
+    ## The JPA implementation, not the programmer, handles the translation between QL and SQL.
+
+    ## Native SQL is still available.
+
+  # There are various implementations of JPA, including. An implementation is a 'JPA Provider':
+
+    -- Hibernate (http://hibernate.org/orm)
+
+    -- EclipseLink (http://www.eclipse.org/eclipselink)
+
+    -- TopLink (http://www.oracle.com/technetwork/middleware/ias/downloads/download-098103.html)
+
+    -- ObjectDB (http://www.objectdb.com/java/jpa)
+
+    ## Some differences in functionality, configuration, and reliabiilty, as you'd expect.

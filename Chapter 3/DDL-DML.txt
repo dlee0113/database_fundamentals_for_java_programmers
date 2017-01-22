@@ -1,0 +1,54 @@
+
+ -- Data Definition Language (DDL) and Data Manipulation Language (DML) in SQL
+
+ # The acronyms DDL and DML are common in discussions of relational databases:
+
+   ## The DML is used to perform the familiar CRUD operations on database tables.
+
+      ### We've seen (or will see) DML in action through a host of SELECT, INSERT, UPDATE, and DELETE commands,
+          including variations that include WHERE clauses, JOINs of different flavors, and 
+          operators such as EXISTS and IN.
+
+   ## Once a database with its tables is set up, programmers tend to focus on DML commands to
+      generate reports by filtering, searching, sorting, updating, and otherwise processing database objects.
+
+   ## The DDL is is used to create and modify the _structure_ of database objects such as tables,
+      and to manage access rights through user roles.  
+
+      ### Defining a table's schema--it's structure of typed fields--is a key part of DDL.
+
+      ### The schema uses a type system to constrain what can be stored in a table.
+
+          Example:
+
+            The activities table in the recClub database has a schema that ensures:
+
+               -- a unique (autoincremented) INTEGER value as a primary key
+
+               -- a non-NULL name of no more than 24 characters: VARCHAR(24), an affinity type for TEXT
+
+               -- a non-NULL cost of type DECIMAL
+
+   ## We're seen DDL in action through the CREATE TABLE command, which in effect creates the table's schema.
+
+   ## Some additional SQL examples not yet seen: 
+
+sqlite> ALTER TABLE activities RENAME TO activity;  ## rename a table
+sqlite> .tables
+activity   customers  sessions 
+
+sqlite> ALTER TABLE activity ADD COLUMN intensity_level VARCHAR(8);
+sqlite> .schema activity
+CREATE TABLE "activity" (act_id integer primary key autoincrement, name varchar(32) not null,
+              cost decimal not null, intensity_level VARCHAR(8));
+
+  ## SQLite has limited support the the ALTER TABLE command. For example, SQLite does not support
+     the SQL-standard operations of renaming a column or dropping a column altogether.
+--------------------
+
+ # Sometimes the DDL/DML distinction is refined further with additional acronyms such as 
+   DCL (Data Control Language) and DQL (Data Query Language). In general, however, the DDL/DML 
+   distinction remains the key one.
+
+
+

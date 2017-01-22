@@ -1,0 +1,96 @@
+
+ -- Relational database table design: Why does good design matter?
+
+ # Well-designed tables help to prevent 'data anomalies', in particular 'update anomalies'.
+
+   ## A root cause of such anomalites is 'data redundancy'.
+
+   Example:
+
+     Assume that, in our company, there are employee categories (e.g., ACC for accounting, IT
+     for information technology, and so on). These categories determine the min/max salaries
+     for employees in these categories.
+
+     Now here's a badly designed table structure:
+
+       Employee(Id, Lname, Mi, Fname, JobCategory, Sal, MinSal, MaxSal)  ## JobCategory ----> MinSal and MaxSal
+
+     ### What could go wrong:
+
+         The min/max values are changed for a particular JobCategory, which requires a change
+         to every row with a matching JobCategory. Further, the MinSal and MaxSal must be
+         changed as well for these same rows.
+
+         Presumably we've a batch program to make such changes; if the changes must be 
+         made manually, the updating process is even more error-prone. Suppose the batch
+         program breaks somewhere in the middle. Now what? Fixable, of course; but until
+         then the table is in an inconsistent state with respect to JobCategory, MinSal, and
+         MaxSal values.
+
+     ### The underlying cause:
+
+         There's data redunancy. Suppose, for example, these values:
+
+         JobCategory     MinSal           MaxSal
+            IT         $87,250.00       $287,400.00
+   
+         Suppose, further, that there are 150 IT employees. Then the triple
+         IT | $87,250.00 | $287,400.00 is stored 150 times, which is 149 times too many.
+
+     ### We can eliminate the redundancy with a better design, using two tables instead of one:
+
+               Employee(Id, Lname, Mi, Fname, JobCategory_Id)  ## JobCategory_Id is a foreign key
+                                                   |
+                        +--------------------------+           ## Decompose the original table into two
+                        |
+           JobCategory(Id, Name, MinSal, MaxSal)               ## MinSal, MaxSal stored once per JobCategory
+
+       
+        If the min/max changes for a group, only the JobCategory table is changed -- and only a specified row at that.
+        The Employee table does not change at all.
+
+ # A database 'schema' (aka 'scheme') is a blueprint, using data types and other restrictions, for
+   values stored in tables and accessible in views.
+
+         Example from our SQLite recClub.db:
+
+           sqlite> .schema sessions
+           CREATE TABLE sessions (sess_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                                  fromD DATE NOT NULL,
+                                  toD DATE NOT NULL, 
+                                  customer_id INTEGER, 
+                                  activity_id INTEGER, 
+                                  FOREIGN KEY(customer_id) REFERENCES customers(cust_id),
+                                  FOREIGN KEY(activity_id) REFERENCES activities(act_id));
+
+           SQLite shows the SQL command used to create the table. Many other representations are used.
+           Here's a sample to give the look and feel:
+
+             Schema for the 'sessions' table:
+
+               Attribute       Data type       Other properties
+                
+               sess_id         INTEGER         PRIMARY KEY, UNIQUE PER ROW, AUTOINCREMENTED, NON-NULL
+               fromD           DATE            NON-NULL, implemented as string
+               toD             DATE            NON-NULL, implemented as string
+               customer_id     INTEGER         FOREIGN KEY linked to customers(cust_id)
+               activitity_id   INTEGER         FOREIGN KEY linked to activities(act_id)
+
+   ## A database is 'normalized' (at some level) if all of the schema are normalized.
+
+      ### For convenience, we'll talk about tables as 'normalized' or not ('denmormalized' in some respect).
+    
+ # To bring the threads together: a table is 'normalized' if it's structured in specific ways to avoid data 
+   redundancy and, on the flip side, to ensure data integrity. (These concepts will be fleshed out through examples.)
+
+   ## There are levels or 'forms' of normalization: 1NF (1st Normal Form), 2NF (2nd Normal Form), and so on.
+
+   ## There are tools and techniques for designing databases in general, and relational ones in particular.
+      The approach here will be practical, and focused on two questions:
+
+      -- What's a reasonable NF to aspire to?
+
+      -- How can we check whether a table's structure meets a particular normalization form?
+
+
+

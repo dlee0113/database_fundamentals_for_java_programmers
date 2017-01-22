@@ -1,0 +1,84 @@
+
+-- Compiling and running the sample apps
+
+ # The sample JDBC apps compile with core Java alone: required types such as DriverManager and Connection
+   are included in the java.sql package, which is part of core Java.
+   
+ # However, running the JDBC apps requires a JDBC _implementation_, which comes in a JAR file such as
+   the sqlite-jdbc.jar file used in my apps.
+
+   ## To make running the sample apps straightforward, I provide executable JARs that include the
+      required implementation types in sqlite-jdbc.jar.
+
+   ## There's still a catch: you may want to experiment with the sample code, or you may be using
+      an _earlier_ version of Java than mine (Java 8 SE).
+
+   ## Accorindingly, I've included an Ant script (build.xml) that creates an execute JAR after
+      compiling Java source files and encapsulating the sqlite-jdc.jar (or any other required JAR).
+
+      ### Apache Ant available at: https://ant.apache.org/bindownload.cgi
+
+      ### Before downloading, check whether you have it already. At the command-line prompt:
+
+          ant -version
+
+ # Example
+
+   Let's go back to the BuildTablesUtil.jar example. Here's the directory structure, with comments:
+
+   'cwd' is 'current working directory'--any directory should do
+
+                        cwd                  ## contains my Ant script 'build.xml'; Ant command issued from here
+                         |
+                +--------+--------+
+                |                 |
+               lib               src
+                |                 |
+          sqlite-jdbc.jar    BuildTablesUtil.java
+                
+               ## lib contains JAR libraries such as sqlite-jdbc.jar
+               ## src contains Java source, which may be in src directory or subdirectories representing Java packages
+
+   The Ant script changes _nothing_ in the lib or src directories, but rather copies files to its own 'build' directory
+   where it does the compilation. The resulting executable JAR is located in cwd.
+
+   The Ant commmand:
+
+      ant -Djar.name=BuildTablesUtil.jar
+
+   ### Very important: the jar.name should be the name of the class that encapulates 'main'.
+       For example, suppose we change the above to:
+
+                        cwd                  ## contains my Ant script 'build.xml'; Ant command issued from here
+                         |
+                +--------+--------+
+                |                 |
+               lib               src
+                |                 |
+          sqlite-jdbc.jar       intro
+                                  | 
+                            BuildTablesUtil.java  ## This Java file is in package intro
+
+   The Ant command is now:
+
+      ant -Djar.name=intro.BuildTablesUtil
+
+   In any case, the JAR is executed in the regular way:
+
+      java -jar BuildTablesUtil.jar
+
+             or
+         
+      java -jar intro.BuildTablesUtil.jar
+
+
+  
+           
+
+
+
+          
+
+             
+
+

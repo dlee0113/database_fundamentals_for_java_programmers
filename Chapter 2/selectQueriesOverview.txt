@@ -1,0 +1,65 @@
+
+ -- Overview of select queries: the 'R' in CRUD
+
+ # Here's a depiction:
+
+       table: persistent collection of structured data: CREATE TABLE ...
+
+       view:  non-persistent -- as the name says, a view of table, in full or in part: SELECT ...
+
+              ## look at all of the data, but change the order of the columns
+	      ## look at all of the data, but sort the rows in different ways
+              ## look at only selected rows, but all of the columns in each
+              ## look at rows and columns from _different_ tables
+              ## ...    
+
+
+                 arbitrary mix of tables and views
+                                    \                  not persistent
+                             +--------------+              /
+          select query------>| tables/views |-------->resulting view  
+                             +--------------+                            
+                                   /
+                       tables are persistent, views are not
+
+ ---------------------------------------------------------------------------------------------------
+
+ -- A bit of theory to guide our 'select' examples
+
+ # A table ('relation') is implemented as a set of rows: a row is a set of columns.
+
+   ## A set has no duplicates, and the order of elements (rows and columns) is arbitrary.
+
+      ### You can change the order of the rows and/or columns without thereby changing the
+          'information content' of a table.
+
+      ### It's possible, but a bad idea, to have duplicate rows in virtually any RDBMS, including SQLite.
+
+          #### In our examples, we've safeguarded against this by having the 'primary key'
+               of each table be an 'autoincrement' integer value, which guarantees that every row has its own
+               unique ID value -- hence, no two rows can be the same.
+
+ # Processing a 'select' query:
+
+   -- Write the query: SELECT <columns> FROM <table(s)/view(s)> WHERE <conditions>
+
+   -- Execute the query, getting a ResultSet in return: the set of rows/columns that satisifies any query constraints
+
+   -- Iterate over the ResultSet, extracting and otherwise processing the data as needed
+
+ # Quick look at 'select' types:
+
+   -- simple selects: all rows, all columns, 1 table
+  
+   -- filtered selects: some rows, all columns, 1 table
+
+   -- projected selects: all rows, some columns, 1 table
+
+   -- combinations of these: some rows, some columns, 1 table
+
+   -- selects with special functions and modifiers: sum, count, distinct, group by
+
+   -- joins: some rows, some columns, > 1 table (including joining a table with itself)
+
+   -- selects with subquery-selects (to any level)
+

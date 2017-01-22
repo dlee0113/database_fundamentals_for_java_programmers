@@ -1,0 +1,40 @@
+
+ -- 1st JPA example
+
+  # Here's an overview of the pieces, with the layout required to build an executable JAR with my (revised) Ant script:
+
+                                      cwd        ## contains the revised build.xml
+                                       |
+       +-------------------------------+-------------------------------+
+       |                               |                               |
+    META-INF                          lib                             src
+       |                               |                               |
+ persistence.xml             javax-persistence.jar                  Product.java             ## @Entity class
+                                eclipselink.jar                     PersistenceManger.java   ## contains 'main'
+                      org.eclipse.persistence.jpa.modelgen.jar  
+                               sqlite-jdbc.jar
+
+    ## sqlite-jdbc.jar:                            same as before, no changes here
+    
+    ## javax-persistence.jar:                      JPA types such as Persistence, EntityManager, etc.
+                                                   (JPA is Java EE, not Java SE)
+
+    ## eclipse-link.jar:                           base JPA implementation
+
+    ## org.eclipse.persistence.jpa.modelgen.jar:   utilities to create table schema from @Entity classes
+
+    ## persistence.xml:                            the all-important configuration file
+
+  # URL for EclipseLink, our JPA 'provider': https://www.eclipse.org/eclipselink/downloads/
+
+    ## Download the ZIP file, and then unzip. Search for the JAR files listed above.
+
+       ### I've simplified the file names by taking off the version numbers.
+
+       ### Where the files are:
+
+                      eclipselink    ## directory created by un-ZIPing the downloaded file
+                          |
+                         jlib        ## contains eclipse-link.jar
+                          |
+                         jpa         ## contains javax-persistence.jar and  org.eclipse.persistence.jpa.modelgen.jar

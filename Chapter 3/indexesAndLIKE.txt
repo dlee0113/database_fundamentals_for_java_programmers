@@ -1,0 +1,90 @@
+
+ -- Indexing and SQL pattern matching
+
+  # Motivation: the activities(act_id, name)  table is stored on disk in some order: for
+    us programmers, the order is arbitrary, and opaque unless we use some low-level tools.
+
+    -- Since act_id is the primary key, the DB system is going to 'index' the table by this field
+       to optimize searching and other operations.
+
+    -- As DB users, we may want to optimize searches and the like on the 'name' field as well.
+       We can do so by explicitly creating an index on this field.
+
+    ## In general, indexing is a performance-enhancing mechanism that exhibits the
+       familiar space/time tradeoff in programming: an index takes up space, but saves time on
+       operations such as searching and soring.
+
+  # Modern RDBMSes (including SQLite) automatically index the table on its primary key to optimize
+    sorting and searching (e.g., in SELECT queries and in ORDER BY clauses).
+
+               index          physical order of records
+
+                1-------+      +---->record1    ## 1st stored record
+                2-------|---+  |     record2    ## 2nd stored record
+               ...      |   |  |     record3    ## 3rd stored record
+                        |   +--|---->record4        ...
+               13-------|------+      ...
+               ...      |
+               32       +----------->record32   ## 32nd stored record
+               ...                                  ...
+
+     Other fields may be indexed as well, which also is an optimization.
+
+sqlite> CREATE UNIQUE INDEX nameIdx ON activities(name);
+
+sqlite> .schema activities
+CREATE TABLE activities (act_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(32) NOT NULL, cost DECIMAL NOT NULL);
+CREATE UNIQUE INDEX nameIdx ON activities(name);
+-----------------------------------------------------------------------------------------
+
+ -- SQL and pattern matching
+
+# Pattern matching in WHERE clauses
+
+  ## SQLite has the two SQL-standard wildcards for pattern matches: percentage sign % and underscore _:
+
+       %   matches zero or more characters/numerals. 
+
+       _   matches a single character/numeral. 
+
+  ## SQLite does have a REGEXP operator, but this is available only if user defines the function regexp()
+     to handle the actual pattern matching.
+
+     ### There are standard regex libraries (e.g., Perl's implemenation) that can be loaded into SQLite.
+
+-- Examples (with comments at the end prefaced with ##):
+
+sqlite> SELECT * FROM activities WHERE name LIKE 's%';    ## activity names that start with an 's'
+
+1|squash|10.7746028900146
+8|swimming|61.7872505187988
+12|skate boarding|9.35854530334473
+-----
+
+sqlite> SELECT * from activities WHERE cost LIKE '%99%';  ## activity costs with '99' anywhere in the cost
+
+13|chess|10.9251699447632
+15|checkers|35.9956703186035
+18|boxing|45.9971389770508
+-----
+
+sqlite> SELECT * from activities WHERE cost LIKE '_2%7';  ## cost with 2 as the 2nd digit, and 7 as the last
+
+9|water polo|12.9786262512207
+-----
+
+sqlite> SELECT * from activities WHERE name LIKE '_%o';   ## names of at least 2 chars, ending with 'o'
+9|water polo|12.9786262512207
+14|go|59.3342895507813
+16|judo|10.0328559875488
+17|akido|22.0808410644531
+-----
+
+sqlite> SELECT * from activities WHERE name LIKE '__%o';  ## names of at least 3 chars, ending with 'o'
+9|water polo|12.9786262512207
+16|judo|10.0328559875488
+17|akido|22.0808410644531
+-----
+
+
+

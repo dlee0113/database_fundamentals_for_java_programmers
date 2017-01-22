@@ -1,0 +1,89 @@
+
+ -- The Java MongoDB API: Overview
+
+  # Mongo databases are implemented as files that store document collections.
+
+   MongoDB server process                 files in a directory specified in mongo.conf
+          /                                            /
+      +--------+   CRUD + other operations  +--------------------------------+
+      | mongod |<-------------------------->| files on the local file system |
+      +--------+                            +--------------------------------+
+                                                        \
+                                                local copy of the database
+
+--------------------------------
+
+  # Understanding the human-readable document format (JSON) makes it easier to understand the
+    MongDB Java API.
+
+  # A JSON (JavaScript Object Notation) document is the text representation of a JavaScript object.
+    (JavaScript has objects and inheritance, but no classes.)
+
+  # A Java object is a map instance, with { starting the map and } ending the map.
+
+                     key   value
+                       /    /
+         var fred = { id: 1234, name: "Frederick", age: 47, sal: 98765.43, occ: 'driver' }  
+              /        
+         object reference
+
+    ## Maps are nice in that the order of the key/value pairs doesn't matter.
+
+    ## JavaScript functions (code) are objects: an unnamed function is simply
+
+                 arg list       body = statements in braces = JavaScript object
+                      /          /
+          function(a, b, c) { /*...*/  }
+
+  # A Mongo DB is a collection of map (object) instances, represented as JSON documents.
+
+    ## For efficiency, the documents are stored in BSON format ('B' for binary).
+
+  # Operations:
+
+    -- Construct a map (JSON object) by specifying the key/value pairs.
+
+    -- Search a collection of maps by specifying the key/value pairs of interest.
+
+    -- Regex searches work well.
+
+------------------------------
+
+  # Storage level
+ 
+    ## From a linux machine, some content from the config file /etc/mongod.conf:
+
+      # mongod.conf
+
+      # for documentation of all options, see:
+      #   http://docs.mongodb.org/manual/reference/configuration-options/
+
+      # Where and how to store data.
+      storage:
+         dbPath: /var/lib/mongodb
+         journal:
+          enabled: true
+      #  engine:
+      #  mmapv1:
+      #  wiredTiger:                      ;; storage engine with concurrency control on reads
+
+      # where to write logging data.
+      systemLog:
+        destination: file
+        logAppend: true
+        path: /var/log/mongodb/mongod.log
+
+      # network interfaces
+       net:
+        port: 27017
+        bindIp: 127.0.0.1
+----------------------------------------------
+
+ # Sample files from the data store directory /var/lib/mongodb:
+
+collection-0-3296062443603835099.wt  diagnostic.data                 mongod.lock  
+collection-0-5001990757291700269.wt  index-1-3296062443603835099.wt  WiredTiger.lock
+collection-2-3296062443603835099.wt  index-1-5001990757291700269.wt 
+collection-2-5001990757291700269.wt  index-5-5001990757291700269.wt                    
+collection-4-3296062443603835099.wt  index-1-5001990757291700269.wt  
+       

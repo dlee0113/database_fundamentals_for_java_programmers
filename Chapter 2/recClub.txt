@@ -1,0 +1,42 @@
+
+ -- The recClub database
+
+ # The RecClub: customers pay to participate in activities, which are offered in sessions.
+
+   Here's the format used below to describe the relations (tables): TableName(ColumnName1, ColumnName2,...)
+
+   Customers(Name,                      ## for now, a single name 
+             Id)                        ## Id is unique per customer ('primary key')
+
+   Activities(Name,                     ## e.g., 'squash', 'bowling', '3-on-3 basketball'
+              Cost,                     ## what the customer pays for the activity
+              Id)                       ## unique per Activity ('primary key')
+
+   Sessions(From,                       ## timestamp
+            To,                         ## timestamp
+            Activity_Id,                ## link to Activities ('foreign key')
+            Customer_Id,                ## link to Customers  ('foreign key')
+            Id)                         ## unique per Session ('primary key')
+
+
+   Depiction of foreign keys:
+
+    Sessions table
+      ...           activity 10 (diving)
+                        /
+      Oct 1 | Oct 10 | 10 | 21 | 4
+       /         \           \
+     from        to       customer 21 (Bob21)
+      ...
+
+ # How to build the DB and its tables?
+
+   -- Use the SQLite client ("command-line shell"): do it manually, import data (e.g., CSV), etc.
+
+   -- Use a (Java) program: the thru-code approach
+
+      ## We'll let the JDBC driver do the conversions from Java types to SQLite types
+    
+
+
+  

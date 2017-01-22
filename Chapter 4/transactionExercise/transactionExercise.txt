@@ -1,0 +1,25 @@
+
+ -- A JDBC exercise with transactions
+
+  # Let's look again at the BuildTablesUtil.java source code with eye on inefficiency: all of the 
+    SQL mutating statements are executed as transactions with a _single_ operation.
+
+    ## This isn't so bad for the CREATE TABLE operations, as there are only three tables created:
+       customers, activities, and sessions.
+
+    ## The problem is with the INSERT statements, which occur in for-loops: 
+       32 (customers), 20 (activities), and sessions (64) for 116 auto-transactions in all.
+
+  # So the exercise is to reduce significantly the number of auto-transactions over all, in 
+    particular for the INSERT commands used to populate the tables.
+
+  # Recall that the syntax of an explicit,  multi-operation transaction is remarkably straightforward:
+
+       conn.setAutoCommit(false);   // turn off the 'auto transaction' for single operations
+          ...                       // presumably multiple operations
+       conn.commit();               // commit the transaction
+          ...                       // note that 'auto transaction' is still off
+
+
+
+

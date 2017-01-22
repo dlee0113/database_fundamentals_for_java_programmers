@@ -1,0 +1,24 @@
+
+ -- Course overview
+
+ # In a nutshell, the screencast covers database fundamentals for Java programmers.
+
+   ## The database systems covered are the still dominant RDBMSes (Relation DataBase Management System),
+      and the now popular 'no-sql' (that is, 'non-relational') systems.
+
+      ### The 'no-sql' systems come in many flavors.
+
+      ### It's now common for RDBMes to add 'no-sql' features, and 'no-sql' systems have 'query languages'
+          that resemble the standard query language for RDBMes (SQL: Structured Query Language).
+
+   ## The programming language for the course is core Java (Java SE), although examples from other languages
+      are used to illustrate commonalities in how code interacts with DBs.
+
+      ### Java has two distinct APIs for interacting with DBs:
+
+          1. JDBC (Java DataBase Connectivity): the base level, a thin wrapper around SQL.
+
+          2. JPA (Java Persistence API): An ORM (Object/Relation Mapper) for Java, with various implementations
+             (e.g., EclipseLink and Hibernate)
+
+             -- A JPA implementation typically builds upon a JDBC implemenation, although the APIs are distinct.

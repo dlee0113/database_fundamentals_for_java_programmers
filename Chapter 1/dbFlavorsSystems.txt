@@ -1,0 +1,91 @@
+
+ -- Database flavors and systems
+
+ # What's a database?
+
+   ## 'Database' is a notion with blurred edges: a working definition, not a precise one, will have to do.
+
+   ## 1st try: 
+
+      ***
+      a persistent data store that supports the basic CRUD (Create-Read-Update-Delete) operations and
+      preserves the ACID (Atomicity-Consistency-Isolation-Durability) properties throughout these operations.
+      ***
+
+      ### In CRUD, the CUD operations alter the DB, but the R operation does not.
+
+      ### The ACID properties ensure data integrity. They're tricky enough to require a lesson on their own.
+
+   ## Not all DBs are persistent, though: there are 'in-memory only' DBs (e.g., SQLite can be used in both
+      in-memory-only and persistent modes).
+
+   ## Modern DBs provide many other supporting services (e.g., security): back-burner for now.
+
+--------------------------------------------------------------------------------------------------------------
+
+ # DB systems overview
+
+   -- From ancient history, 'hierarchical systems' such as IBM's IMS (Information Management System)      
+      ## Data stored in tree-like structures.
+
+   -- Also from ancient history, 'network systems' such as GE's IDS (Integrated Data Store)
+      ## Data stored in graph-like structures, not just the tree subtype.
+
+   -- Nowadays two general approaches:
+
+      1. The still ubiquitous 'relational systems' that originate from IBM, in particular E. F. Codd's work 
+         in the late 1960s.
+
+         ## Strong mathematical foundation, in particular from first-order logic (FOL).
+            ### In FOL, a 'relation' is a 'predicate': a function that maps to a truth-value (e.g., 'true' or 'false').
+                  We'll see later how this plays out in practice.
+
+            ### In RDBMSes (Relational DataBase Management Systems), a relation is implemented as a table 
+                with rows and columns.
+
+                  Example -- here's a depiction of a the relation named 'Employee', which would be
+                             implemented as the Employee table in a DB system. In parens are the
+                             column labels (id, fname,...,sal): each row has values for all six columns.
+
+                    Employee(id, fname, mi, lname, dept, sal)  ## structure of the Employee table ('relation')
+
+                    ...
+                    Row 27: 196A, Fred, J, Flintstone, Construction, 123456.78   ## values in a sample row
+                    ...
+
+                    Row 27 can be interpreted as the true statement: There is an Employee with Id 196A named Fred...
+                    A more technical representation is below:
+
+             ### The Employee table can be thought of, in mathematical terms, as the IsAnEmployee relation -- a 
+                 relation true of every row in the Employee table.
+
+             ### In detail:
+
+            predicate or relation         3rd arg            5th arg                        truth-value
+                          \                 /                  /                    maps to    \
+                      Employee(196A, Fred, J, Flintstone, Construction, 123456.78) ---------> true
+                                \      \          \                          \  
+                             1st arg  2nd arg   4th arg                     6th arg
+ 
+         ## SQL (Structured Query Language) is the standard language in an RDBMS.
+            ### SQL has various standards. For instance, SQL-92 (SQL-1992) is a major revision/standardization.
+                  Later revisions include SQL:1999, SQL:2003, SQL:2008, and SQL:2011.
+
+            ### An RDBMS typically specifies which version of SQL is supported in full or in large part.
+
+      ## Sample RDBMSes: Oracle, DB2, SQL Server, MySQL, PostgreSQL, SQLite,...
+
+      2. The up-and-coming, widely varying 'no-SQL' ('non-relational') systems such as Cassandra, CouchDB,
+         MongoDB, Redis,...
+
+         ## Great variety in features and approaches, which makes for various subcategories. 
+      
+            ### In simplest form, 'no-SQL' DBs are key/value stores: persistent maps that support the CRUD operations
+	        ans (at least most of) the ACID properties.
+
+         ## The unifying feature is the 'non-relational', although such systems may have query languages with a
+            striking resemblance to SQL, the standard relational language.
+  
+
+
+

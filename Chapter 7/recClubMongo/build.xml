@@ -1,0 +1,80 @@
+<?xml version = "1.0" encoding = "UTF-8"?>  
+
+<!-- The working directory should contain this file, build.xml. Immediately below
+     should be the 'src' subdirectory, with subdirectories therein for packages if you like.
+     The 'lib' subdirectory contains JAR files. Either 'src' or 'lib' can have subdirectories.
+     For example, with 'cwd' as the current working directory, here's the layout for
+     producing the executable JAR named BasicJDBC.jar:
+
+                      cwd     ## contains build.xml, ant command given at this level
+                       |
+                  +____+____+
+                  |         |
+                 src       lib  
+                  |         |
+        BasicJDBC.java    sqlite.jar   ## class BasicJDBC encapsulates 'main'
+
+     The Ant command is:
+
+        ant -Djar.name=BasicJDBC ## -Djar.name=... means: set jar.name property to ...
+
+     The value for jar.name should be the name of the class (in this case, BasicJDBC) that
+     encapsulates the main method. This is important because the Ant script creates the
+     appropriate manifest.
+
+     For convenience, source files are included in the JAR, although only the .class files are needed.
+-->
+
+<project name="ProjectDB" basedir="." default="jarit">  
+  <property name="src.dir"   value="${basedir}/src"/>  
+  <property name="lib.dir"   value="${basedir}/lib"/>
+  <property name="build.dir" value="${basedir}/build"/>  
+   <property name="jar.name" value="Default"/>
+
+  <path id="master-classpath">  
+    <fileset dir="${build.dir}">  
+      <include name="*.jar"/>  
+    </fileset>  
+    <pathelement path="${build.dir}"/>  
+  </path>  
+  
+  <target name="clean" description="clean up">
+    <delete dir="${build.dir}" />
+    <delete>
+    	<fileset dir="." includes="*.jar"/>
+    </delete>
+  </target>
+  
+  <target name="prepare" depends="clean">
+    <mkdir dir="${build.dir}"/>
+    <!-- Copy files from source to build directory  -->
+    <copy todir="${build.dir}">
+      <fileset dir="${src.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${build.dir}">
+      <fileset dir="${lib.dir}">
+        <include name="**.jar"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile" depends="prepare">
+    <javac destdir="${build.dir}" debug="true"  
+           includeantruntime="false" deprecation="false" optimize="false" failonerror="true">  
+      <src path="${build.dir}"/>  
+      <classpath refid="master-classpath"/>  
+    </javac>  
+  </target>  
+
+  <target name="jarit" depends="compile">
+    <jar destfile="${basedir}/${jar.name}.jar" basedir="${build.dir}">
+      <zipgroupfileset dir="${lib.dir}" includes="**/*.jar" />
+      <manifest>
+	<attribute name="Main-Class" value="${jar.name}"/>
+      </manifest>
+    </jar>
+  </target>
+</project> 

@@ -1,0 +1,47 @@
+
+ -- Wrapup of JPA basics
+
+ # JPA is a higher-level API than JDBC.
+
+   ## In particular, it's the designated ORM for Java.
+
+   ## JPA is officially part of enterprise, not core, Java; but JPA can be used in plain-old core Java apps.
+
+      ## For core Java apps, there's no 'container' to over some of the JPA setup, in particular the
+         creation of the all-important EntityManager.
+
+      ## For core Java apps, there's no 'auto-detection' of @Entity classes -- so the config should specify
+         that the JPA runtime look at all classes, not just those listed in the config file 'persistence.xml'.
+
+ # JPA allows config information to be given in two ways:
+
+   -- In the 'deployement descriptor' file, persistence.xml
+
+   -- Through javax.persistence annotations such as @Entity, @Id, and so on.
+
+   ## Which way to go?
+
+      -- With experience, you'll develope a style. The sample 'persistence.xml' files are a place to start.
+
+ # Clean API: all of the CRUD operations are implemented as EntityManager methods.
+
+   ## The 'mutating' operations CUD are method calls within an explicit transaction: 
+
+            em.getTransaction().begin();   // start
+                  ...
+            em.getTransaction().commit(); // commit (or rollback)
+
+ # JPA has some very powerful features:
+
+   -- Automatic generation of table schema from @Entity classes
+
+   -- Queries whose results can be data-typed explicitly, e.g., List<Activity> 
+
+   -- A high-level query language JPQL (QL for short) that abstracts from peculiarities in native SQL dialects
+
+      ## In the end, though, it's always the question of whether the underlying DB supports the
+         SQL that JPA generates.
+
+
+
+

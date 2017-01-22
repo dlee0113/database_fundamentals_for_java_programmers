@@ -1,0 +1,23 @@
+
+  -- The mercifully short story:
+
+    # An academic by profession, but with lots of consulting experience as a programmer
+
+      ## Full-time faculty member for 30-plus years in DePaul's College of Computing and Digital Media
+         PhD from Northwestern University
+
+      ## Long-term experience in programming production planning-scheduling systems (steel industry mostly) and
+         product configuration systems (large-vehicle manufacturing mostly)
+
+    # The hands-on approach is the hands-down best approach.
+
+    # I've used Java since JDK 1.0 (whew!), and remain an enthusiast.
+    
+      ## Can't recall a real-world Java app of mine that didn't use a database.
+
+    # Feel free to contact me at: kalin@cs.depaul.edu
+                                  http://condor.depaul.edu/mkalin
+
+    Marty Kalin
+
+

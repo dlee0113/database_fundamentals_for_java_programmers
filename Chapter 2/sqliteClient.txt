@@ -1,0 +1,38 @@
+
+-- SQLite command-line client
+
+ # Two basic ways to invoke:
+
+   sqlite3             ## open a transient ('in-memory' only) DB, which can be backed up later
+
+   sqlite3 recClub.db  ## open a specified DB, creating it if necessary
+
+ # Commands:
+
+   -- Any SQL command, terminated with a semicolon. Here's two examples:
+
+      SELECT * FROM activities;
+
+      SELECT name FROM customers WHERE cust_id IN 
+       (SELECT customer_id FROM sessions WHERE activity_id IN
+         (SELECT act_id FROM activities WHERE name = 'squash'));
+
+   -- 'Meta-data' and utility commands, which begin with a period (.). Examples:
+
+       .help                       ## help, .h for short
+       
+       .tables                     ## list all tables
+       
+       .schema                     ## list all schemas (structures) for all tables
+       .schema activities          ## schema for activities table only
+       .schema --indent activities ## pretty-print the schema
+       
+       .indices activities         ## user-created indices for the activities table
+       
+       .backup main test.db        ## save the in-memory DB 'main' (default) as file test.db
+
+       .quit (or .exit)            ## quit the client (.q for short)
+
+     ## There are also commands to save a DB as relevant SQL statements, and to create a
+        DB from such statements.
+      

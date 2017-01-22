@@ -1,0 +1,43 @@
+
+ -- Wrapup of basic SQL/JDBC
+
+ # SQL is the standardized language for RDBMSes.
+
+   ## It's expressive and flexible; hence, many different ways to do the same thing.
+
+   ## We've gone for the "as simple as possible" approach to SQL.
+
+ # JDBC is the standard SQL API in Java.
+
+   ## It's the base-level API for programmatic access to a RDBMS.
+
+   ## In effect, it's a thin wrapper around SQL -- but with some high-level constructs to ease the task.
+
+      -- The PreparedStatement and the ResultSet are two obvious examples.
+
+ # The typical setup for using JDBC to access a RDBMS:
+
+   1. Load the DB-specific 'driver', and then connect to the DB:
+
+	    Class.forName("org.sqlite.JDBC");                             
+	    conn = DriverManager.getConnection("jdbc:sqlite:recClub.db"); 
+
+      ## The DB vendor typically provides the 'driver', but 3rd-party drivers are common as well.
+
+      ## There are drivers available for 'no-sql' systems as well.
+
+   2. Use the Connection to create Statements (including PreparedStatements), which are the thin
+      wrappers around SQL statements (CREATE, INSERT, DELETE, UPDATE, SELECT,...).
+
+      ## The PreparedStatement is a convenient way to go between Java data types (e.g., String or BigDecimal) and
+         SQL data types (in this case, TEXT and DECIMAL, respectively).
+
+   3. Execute the Statement. If appropriate (e.g., a SELECT statement), capture the returned view in a ResultSet.
+
+   4. Iterate over the ResultSet, performing whatever logic is appropriate for the app.
+
+   5. Clean up by closing any statements and connections.
+
+      ## Try to reuse statements and connections, closing them only when done.
+
+

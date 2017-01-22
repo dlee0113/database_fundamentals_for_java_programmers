@@ -1,0 +1,22 @@
+
+ -- The tie-in between moving to PostgreSQL and JPA relationships
+
+  # Quick summary of the EmpDept app:
+
+    -- Uses JPA annotations to model a @OneToMany relationship between Departments and Employees
+
+    -- Populates the underlying tables with data for illustration and testing.
+
+    -- Retrieves data from the underlying tables without any explicit queries in JPQL or SQL.
+
+---------------------------------------------
+
+  # The "JPA engine" must generate SQL to implement its high-level constructs,
+    including relationships such as @OneToMany.
+
+  # The target DB system, in our case SQLite or PostgreSQL, must implement the required SQL features.
+
+  # In the Employee/Department JPA example, the JPA engine generates some ADD CONSTRAINT operations in SQL.
+
+    ## SQLite doesn't support ADD CONSTRAINT, but PostgreSQL does.
+
